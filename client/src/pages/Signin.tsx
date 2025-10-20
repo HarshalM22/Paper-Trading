@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { X } from "lucide-react"; 
 import { useNavigate } from "react-router-dom"; 
-
+import axios from "axios"
+import { BACKEND_URL } from "@/config";
 export function SigninPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Logging in with:", { email, password });
+
+    const res = await axios.post(`${BACKEND_URL}/api/signin`,{
+      email,
+      password
+    })
+    console.log(res.data)
     alert("Login form submitted! Check the console for details.");
   };
 
