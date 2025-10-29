@@ -12,12 +12,16 @@ export function SigninPage() {
     e.preventDefault();
     console.log("Logging in with:", { email, password });
 
-    const res = await axios.post(`${BACKEND_URL}/api/signin`,{
+     await axios.post(`${BACKEND_URL}/api/signin`,{
       email,
       password
+    }).then((response)=>{
+      localStorage.setItem("token", response.data.token);
+      navigate('/dashboard');
+    }).catch((err)=>{
+      console.error("Login error :", err);
     })
-    console.log(res.data)
-    alert("Login form submitted! Check the console for details.");
+    
   };
 
   return (

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { X, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { BACKEND_URL } from '@/config';
 
 export function SignupPage() {
   const [username, setUsername] = useState('');
@@ -14,11 +16,19 @@ export function SignupPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      console.log('Signup data:', { username, email, password });
-      alert('Signup successful!');
-      setIsSubmitting(false);
-    }, 1000);
+    axios.post(`${BACKEND_URL}/api/signup`,{
+      name : username,
+      email,
+      password
+    })
+    .then((response)=>{
+      console.log("Signup successful :", response.data)
+      navigate('/signin');
+    })
+    .catch((error)=>{
+      console.error("Signup error :", error);
+      alert("Signup failed. Please try again.");
+    }).finally(()=>setIsSubmitting(false));
   };
 
   const inputClasses =
